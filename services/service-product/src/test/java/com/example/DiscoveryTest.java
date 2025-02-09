@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-
 import java.util.List;
 
 @SpringBootTest
@@ -13,6 +12,7 @@ public class DiscoveryTest {
     @Autowired
     DiscoveryClient discoveryClient;
 
+    // 测试 注册发现功能
     @Test
     void discoveryClientTest(){
         for (String service : discoveryClient.getServices()) {

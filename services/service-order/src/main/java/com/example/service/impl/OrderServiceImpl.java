@@ -30,7 +30,7 @@ public class OrderServiceImpl  implements OrderService {
     RestTemplate restTemplate;
 
     @Override
-    public Order createOrder() {
+    public Order createOrder(Long productId ,Long UserId) {
         Order order = new Order();
         order.setId(1111111111111111111L);
         order.setAddress("123 Main St");
@@ -48,10 +48,22 @@ public class OrderServiceImpl  implements OrderService {
         // TODO: implement this method
         List<ServiceInstance> instances =  discoveryClient.getInstances("service-product");
         if (instances.size() > 0) {
+                ServiceInstance serviceInstance = instances.get(0);
+               String url = "http://" + serviceInstance.getHost() + ":" + serviceInstance.getPort() + "/product/" + id;
+            log.info("Calling product service at " + url);
+            // 发送请求获取产品信息
+            return restTemplate.getForObject(url, Product.class);
+        }
+        return null;
+    }
+
+    //
+    private Product getProductFromRemoteWithDiscoveryClient2(Long id) {
+        // TODO: implement this method
+        List<ServiceInstance> instances =  discoveryClient.getInstances("service-product");
+        if (instances.size() > 0) {
             ServiceInstance serviceInstance = loadBalancerClient.choose("service-product");
             String url = "http://" + serviceInstance.getHost() + ":" + serviceInstance.getPort() + "/product/" + id;
-             //   ServiceInstance serviceInstance = instances.get(0);
-            //   String url = "http://" + serviceInstance.getHost() + ":" + serviceInstance.getPort() + "/product/" + id;
             log.info("Calling product service at " + url);
             // 发送请求获取产品信息
             return restTemplate.getForObject(url, Product.class);
