@@ -2,6 +2,7 @@ package com.example.service.impl;
 
 import com.example.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -17,17 +18,18 @@ import java.util.List;
 @Slf4j
 @Service
 public class OrderServiceImpl  implements OrderService {
-
-
     @Autowired
     DiscoveryClient discoveryClient;
 
     @Autowired
     LoadBalancerClient loadBalancerClient;
 
-
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
 
     @Override
     public Order createOrder(Long productId ,Long UserId) {
@@ -35,7 +37,6 @@ public class OrderServiceImpl  implements OrderService {
         order.setId(1111111111111111111L);
         order.setAddress("123 Main St");
         order.setNickname("John 100.00");
-
         Product product = getProductFromRemoteWithLoadBalanceAnnotation(1234567890L);
         List<Product> products = new ArrayList<>();
         products.add(product);
@@ -77,4 +78,27 @@ public class OrderServiceImpl  implements OrderService {
         Product product = restTemplate.getForObject("http://service-product/product/" + id, Product.class);
         return product;
     }
+
+
+
+    @Override
+    public Order createOrder2(Long productId ,Long UserId) {
+        Order order = new Order();
+        order.setId(1111111111111111111L);
+        order.setAddress("123 Main St");
+        order.setNickname("John 100.00");
+        // 发送消息到 RabbitMQ
+        String exchangeName = "my.direct.producExchange1";
+       try {
+           rabbitTemplate.convertAndSend(exchangeName, "product.create", productId);
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+        List<Product> products = new ArrayList<>();
+        order.setProducts(products);
+        return order;
+    }
+
+
+
 }

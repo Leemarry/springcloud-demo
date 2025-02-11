@@ -28,12 +28,23 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 
+        <!-- 后来引入的依赖 rabbitmq -->
+        <!--AMQP依赖，包含RabbitMQ-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <!--Jackson 依赖，用于序列化和反序列化对象-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.dataformat</groupId>
+            <artifactId>jackson-dataformat-xml</artifactId>
+        </dependency>
+
         <!-- Spring Cloud Alibaba 依赖 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
-
         <!-- Spring Cloud Alibaba 注册中心依赖(Nacos 服务发现) -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

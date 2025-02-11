@@ -1,0 +1,23 @@
+#logging:
+#  pattern:
+#    dateformat: MM-dd HH:mm:ss:SSS
+#  level:
+#    com.itheima: debug
+#spring:
+#  rabbitmq:
+#    host: localhost
+#    port: 5672
+#    virtual-host: /
+#    username: itheima
+#    password: 123321
+#    connection-timeout: 1s
+#    template:
+#      retry:
+#        enabled: true # 开启重试机制
+#        multiplier: 2 # 重试间隔倍数
+#        max-attempts: 3 # 最大重试次数
+#        initial-interval: 1000 # 第一次重试间隔
+#        max-interval: 6000 # 最大重试间隔
+#    publisher-confirm-type: correlated
+#    publisher-returns: false
+#

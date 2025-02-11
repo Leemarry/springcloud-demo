@@ -32,5 +32,11 @@ public class OrderController {
         return orderService.createOrder(productId,userId);
     }
 
+    //
+    @GetMapping("/createorder2")
+    public Order createOrder2(@RequestParam(value = "productId") Long productId ,@RequestParam(value = "userId") Long userId) {
+        return orderService.createOrder2(productId,userId);
+    }
+
 
 }
